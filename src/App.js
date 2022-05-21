@@ -1,23 +1,29 @@
-import logo from './logo.svg';
+
 import './App.css';
+import { Phones } from './components';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function App() {
+
+  const [phones, setPhones] = useState([]);
+  const [show, setShow] = useState(false);
+
+  const getPhones = async () => {
+    const response = await axios.get(`http://localhost:4000/phones`);
+    setPhones(response.data);
+  };
+
+  useEffect(() => {
+    getPhones();
+  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  {/*   <Phones/> */}
+
+    {phones.map((phone) => {
+                return <Phones key={phone.id} phones={phone} />;
+            }) }
     </div>
   );
 }
